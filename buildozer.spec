@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = God names
+title = Godnames
 
 # (str) Package name
 package.name = holynames
@@ -29,7 +29,7 @@ source.include_exts = py,png,jpg,kv,atlas
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.14
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
