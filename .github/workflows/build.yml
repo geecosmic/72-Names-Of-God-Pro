@@ -14,8 +14,7 @@ jobs:
       # Get Date to use in cache key
       - name: Get Date
         id: get-date
-        run: |
-          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
 
       # Set up JDK 17
@@ -27,7 +26,7 @@ jobs:
 
       # Set JAVA_HOME
       - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+        run: echo "JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17/x64" >> $GITHUB_ENV
 
       # Display Java version
       - name: Display Java version
@@ -38,7 +37,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }} # Replace with your path
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
       # Cache Buildozer directory
       - uses: actions/cache@v2
