@@ -1,6 +1,12 @@
 name: Build Kivy App
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,7 +29,9 @@ jobs:
         run: java --version
 
       - name: Install dependencies
-        run: pip install buildozer
+        run: |
+          pip install cython
+          pip install buildozer
 
       - name: Build the app
         run: buildozer android debug
