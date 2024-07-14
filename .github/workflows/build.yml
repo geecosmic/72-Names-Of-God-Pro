@@ -24,9 +24,9 @@ jobs:
           distribution: 'temurin'  # or 'zulu'
           java-version: '17'
 
-      # Dynamically set JAVA_HOME
+      # Set JAVA_HOME
       - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+        run: echo "JAVA_HOME=/usr/lib/jvm/default-java" >> $GITHUB_ENV
 
       # Display Java version
       - name: Display Java version
