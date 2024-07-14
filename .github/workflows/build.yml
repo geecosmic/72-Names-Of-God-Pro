@@ -1,67 +1,33 @@
-name: CI
+name: Build Kivy App  
 
-on:
-  push:
-    branches: [ main ]
+on:  
+  push:  
+    branches:  
+      - main  
+  pull_request:  
+    branches:  
+      - main  
 
-jobs:
-  build:
-    runs-on: ubuntu-20.04
+jobs:  
+  build:  
+    name: Build  
+    runs-on: ubuntu-latest  
 
-    steps:
-      - uses: actions/checkout@v2
+    steps:  
+    - name: Set up JDK 17  
+      uses: actions/setup-java@v2  
+      with:  
+        java-version: '17'  
+    
+    - name: Checkout code  
+      uses: actions/checkout@v2  
+    
+    - name: Build Kivy App  
+      run: |  
+        # Add your build commands here for compiling the Kivy app  
 
-      # Get Date to use in cache key
-      - name: Get Date
-        id: get-date
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
+        # For example, you can run the command to compile the app using buildozer:  
+        buildozer android debug  
 
-      # Set up JDK 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'  # or 'zulu'
-          java-version: '17'
-
-      # Set JAVA_HOME
-      - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=/usr/lib/jvm/default-java" >> $GITHUB_ENV
-
-      # Display Java version
-      - name: Display Java version
-        run: java --version
-
-      # Cache Buildozer global directory
-      - name: Cache Buildozer global directory
-        uses: actions/cache@v2
-        with:
-          path: .buildozer_global
-          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
-
-      # Cache Buildozer directory
-      - uses: actions/cache@v2
-        with:
-          path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
-
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          pip install cython
-          pip install buildozer
-
-      # Build with Buildozer
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
-
-      # Upload artifacts
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+      env:  
+        JAVA_HOME: ${{ runner.tools_dir }}/jdk/17
