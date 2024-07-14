@@ -24,9 +24,14 @@ jobs:
           distribution: 'temurin'  # or 'zulu'
           java-version: '17'
 
+      # Display Java installation path
+      - name: Find Java Installation Path
+        run: |
+          echo "Java is installed in: $(dirname $(dirname $(readlink -f $(which java))))"
+
       # Set JAVA_HOME
       - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=/usr/lib/jvm/default-java" >> $GITHUB_ENV
+        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       # Display Java version
       - name: Display Java version
@@ -65,6 +70,3 @@ jobs:
         with:
           name: package
           path: ${{ steps.buildozer.outputs.filename }}
-
-        env:  
-           JAVA_HOME: ${{ runner.tools_dir }}/jdk/17
